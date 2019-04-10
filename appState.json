@@ -1,0 +1,119 @@
+{
+  "EDITOR_STATE": {
+    "allProjectFiles": {
+      "b88c65f9-4d12-4942-a59e-a913154ff65f": {
+        "id": "b88c65f9-4d12-4942-a59e-a913154ff65f",
+        "parent": null,
+        "name": "gcponly",
+        "type": "DIRECTORY",
+        "isDirectory": true,
+        "children": [
+          "c962075e-a6aa-4648-8c5b-6aa0e3ac8023",
+          "87fc98f0-96cb-4aae-934d-09e67388eaad"
+        ],
+        "isRemovable": false,
+        "filePath": "gcponly"
+      },
+      "c962075e-a6aa-4648-8c5b-6aa0e3ac8023": {
+        "id": "c962075e-a6aa-4648-8c5b-6aa0e3ac8023",
+        "parent": "b88c65f9-4d12-4942-a59e-a913154ff65f",
+        "name": "function.js",
+        "type": "JS_LAMBDA",
+        "isDirectory": false,
+        "children": [],
+        "isRemovable": true,
+        "filePath": "gcponly/function.js",
+        "code": "let google = require('googleapis').google\nlet _auth = require('.//Authorizer')\nconst storage = google.storage('v1');\n\nexports.handler = function (request, response) {\n    storage.objects.list({\n        bucket: 'kknew',\n        maxResults: 10,\n        prefix: ''\n    })\n        .then(response => {\n            console.log(response.data);           // successful response\n            /*\n    \n            WARNING: response.data.items will be missing altogether (instead of being empty) if there are no matches!  \n    \n            response.data = {\n                \"kind\": \"storage#objects\",\n                \"items\": [\n                    {\n                        \"kind\": \"storage#object\",\n                        \"id\": \"<bucket>/<object>/<timestamp>\",\n                        \"selfLink\": \"https://www.googleapis.com/storage/v1/b/<bucket>/o/<object>\",\n                        \"name\": \"<object>\",\n                        \"bucket\": \"<bucket>\",\n                        \"contentType\": \"<content-type>\",\n                        \"timeCreated\": \"<yyyy-MM-ddTHH:mm:ss.###Z>\",\n                        \"updated\": \"<yyyy-MM-ddTHH:mm:ss.###Z>\",\n                        \"size\": \"<bytes>\",\n                        \"md5Hash\": \"<hash>\",\n                        \"metadata\": {\n                            \"<key1>\": \"<val1>\",\n                            \"<key2>\": \"<val2>\"\n                        },\n                        \"crc32c\": \"<crc>\",\n                        \"etag\": \"<etag>\"\n                        // , ...\n                    }\n                    // , ...\n                ]\n            }\n            */\n        })\n        .catch(err => {\n            console.log(err, err.stack); // an error occurred\n        });\n\n    response.send({ \"message\": \"Successfully executed\" });\n}",
+        "config": {
+          "runtime": "nodejs8.10",
+          "timeout": 60,
+          "memory": 128,
+          "triggerType": 0
+        },
+        "triggers": [
+          {
+            "resourceName": "http-trigger",
+            "config": {}
+          }
+        ]
+      },
+      "d1d440d2-2445-4c53-8323-88f96e088fa1": {
+        "id": "d1d440d2-2445-4c53-8323-88f96e088fa1",
+        "parent": null,
+        "name": "index.js",
+        "type": "JS_FILE",
+        "isDirectory": false,
+        "children": [],
+        "isRemovable": false,
+        "filePath": "index.js",
+        "code": "// This file is used to register all your cloud functions in GCP.\n// DO NOT EDIT/DELETE THIS, UNLESS YOU KNOW WHAT YOU ARE DOING.\n\nexports.gcponlyfunction = require(\"./gcponly/function.js\").handler;"
+      },
+      "87fc98f0-96cb-4aae-934d-09e67388eaad": {
+        "id": "87fc98f0-96cb-4aae-934d-09e67388eaad",
+        "parent": "b88c65f9-4d12-4942-a59e-a913154ff65f",
+        "name": "Authorizer.js",
+        "type": "JS_FILE",
+        "isDirectory": false,
+        "children": [],
+        "isRemovable": true,
+        "filePath": "gcponly/Authorizer.js",
+        "code": "const google = require(\"googleapis\").google;\n\ngoogle.options({auth: new google.auth.Compute()});"
+      }
+    },
+    "deletedFiles": [],
+    "rootNode": "b88c65f9-4d12-4942-a59e-a913154ff65f",
+    "openFiles": [
+      "c962075e-a6aa-4648-8c5b-6aa0e3ac8023"
+    ],
+    "currentFileId": "c962075e-a6aa-4648-8c5b-6aa0e3ac8023",
+    "resources": {
+      "http-trigger": {
+        "name": "http-trigger",
+        "type": "http-trigger",
+        "config": {}
+      },
+      "storagekknew": {
+        "name": "storagekknew",
+        "type": "storage",
+        "config": {
+          "mode": 1,
+          "bucket": {
+            "name": "kknew"
+          }
+        }
+      }
+    },
+    "customTemplate": {
+      "dialect": null,
+      "definitions": {}
+    },
+    "envVariables": [],
+    "packageJSON": {
+      "dependencies": {
+        "googleapis": {
+          "name": "googleapis",
+          "language": "javascript",
+          "version": "29.0.0",
+          "dev": false,
+          "notRemovable": false
+        }
+      }
+    }
+  },
+  "PROJECT_META": {
+    "projectName": "gcponly",
+    "projectDescription": "only gcp cred, only gcp resources,gcp based",
+    "projectVersion": "1.0.0",
+    "projectRegion": "us-east1",
+    "platform": "GCP",
+    "platformRegions": {},
+    "lastSave": 1554871107586
+  },
+  "VCS_STATE": {
+    "provider": "GitHub",
+    "repo": {
+      "name": "gcponly",
+      "url": "https://github.com/Kumudikatest/gcponly"
+    }
+  }
+}
